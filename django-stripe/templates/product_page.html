@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product</title>
+</head>
+<body>
+    <h1>Welcome to payment</h1>
+    {% if request.user.is_authenticated %}
+    <div>
+        <form enctype="multipart/form-data" method="post" role="'product_page">
+            {% csrf_token %}
+            <h2>Hi {{ request.user.username }}! to pay 
+                <button type="submit" href="'{% url 'core:product_page' %}" data-bind-href="pricing">Payment</button>
+            </h2>
+
+        </form>
+    </div>
+    {% endif %}
+</body>
+</html>
