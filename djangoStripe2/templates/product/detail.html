@@ -1,0 +1,25 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block body %}
+<div class="row">
+    <div class="col-md-4">
+        <img src="{{ product.thumbnail.url }}" class="card-img-top" alt="{{ product.name }}" height="auto" width="300px" style="border-radius: 25px;">
+    </div>
+    <div class="col-md-8">
+        <div class="card" style="border-radius: 25px;">
+            <h5 class="card-header">{{ product.name }}</h5>
+            <div class="card-body">
+              <p class="card-text">{{ product.body }}</p>
+              <p><strong>Price: </strong>{{ product.price }}</p>
+              <p><strong>Stock: </strong>{{ product.quantity }}</p>
+              <p><strong>URL: </strong>{{ product.url }}</p>
+              <p><strong>Book Uploaded: </strong>{{ product.created_at|timesince }} ago</p>
+              <a href="#" class="btn btn-primary">Buy</a>
+            </div>
+          </div>
+    </div>
+</div>
+    
+{% endblock %}

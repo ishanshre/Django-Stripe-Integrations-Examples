@@ -1,0 +1,1 @@
+# Small product selling website using django with stripe integration
