@@ -15,5 +15,19 @@ class Product(models.Model):
     def __str__(self):
         return f"{self.name} --> {self.price}"
     
-    # def get_absolute_url(self):
-    #     return reverse("core:detail", args=[self.id])
+    def get_absolute_url(self):
+        return reverse("core:detail", args=[self.id])
+
+
+class OrderDetail(models.Model):
+    customer_email = models.EmailField()
+    product = models.ForeignKey(Product, on_delete=models.PROTECT)
+    amount = models.IntegerField()
+    quantity = models.IntegerField(validators=[MinValueValidator(1)], default=1)
+    stripe_id = models.CharField(max_length=255)
+    has_paid = models.BooleanField(default=False)
+    created_on = models.DateTimeField(auto_now_add=True)
+    updated_on = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.product.name}--->{self.amount}--->{self.stripe_id}"
