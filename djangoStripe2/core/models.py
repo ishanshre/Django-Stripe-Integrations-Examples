@@ -30,3 +30,20 @@ class Product(models.Model):
     def get_absolute_url(self):
         return reverse("core:detail", args=[self.id])
 
+
+class PaymentHistory(models.Model):
+    class STATUS_CHOICES(models.TextChoices):
+        PENDING = "Pending", 'Pending'
+        COMPLETED = "Completed", 'Completed'
+        FAILED = "Failed", 'Failed'
+    
+
+    email = models.EmailField(unique=True)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    payment_status = models.CharField(max_length=20, choices=STATUS_CHOICES.choices, default=STATUS_CHOICES.PENDING)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.product.name
+
