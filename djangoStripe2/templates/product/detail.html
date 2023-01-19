@@ -1,6 +1,6 @@
 {% extends 'base/base.html' %}
 
-{% block title %}Home{% endblock %}
+{% block title %}{{ product.name }}{% endblock %}
 
 {% block body %}
 <div class="row">
@@ -16,7 +16,10 @@
               <p><strong>Stock: </strong>{{ product.quantity }}</p>
               <p><strong>URL: </strong>{{ product.url }}</p>
               <p><strong>Book Uploaded: </strong>{{ product.created_at|timesince }} ago</p>
-              <a href="#" class="btn btn-primary">Buy</a>
+              <form action="{% url 'core:stripe_checkout_session' product.id %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-outline-danger">Checkout</button>
+              </form>
             </div>
           </div>
     </div>
