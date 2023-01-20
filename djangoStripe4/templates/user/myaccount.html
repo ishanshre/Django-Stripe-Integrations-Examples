@@ -1,0 +1,31 @@
+{% extends 'base/base.html' %}
+
+{% block title %}{{request.user.username|title}}'s' Profile{% endblock %}
+
+{% block body %}
+    <div>
+        <h1 class="text-center">{{ request.user.first_name }} {{ request.user.last_name }}</h1>
+        <p><strong>Username: </strong>@{{ request.user.username }}</p>
+        <p><strong>Email: </strong>{{ request.user.email }}</p>
+        <p><strong>Last Login</strong>{{ request.user.last_login|timesince }} ago</p>
+        <p><strong>Joined: </strong>{{ request.user.date_joined|timesince }} ago</p>
+    </div>
+    <div>
+        <h1 class="text-center">Orders</h1>
+        <div>
+            <ul>
+            {% for order in request.user.orders.all %}
+                <li>Order #{{ order.id }}</li>
+                    <ol>
+                        {% for item in order.items.all %}
+                            <li>
+                                {{ item.product.name }}, Price: {{ item.product.price }}, Quantity: {{item.quantity}}, Total Price: {{ item.price }}
+                            </li>
+                        {% endfor %}
+                    </ol>
+            {% endfor %}
+            </ul>
+        </div>
+    </div>
+    
+{% endblock %}

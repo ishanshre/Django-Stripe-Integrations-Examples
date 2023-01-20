@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.views import LoginView
+from django.contrib.auth.decorators import login_required
 from django.views.generic.edit import CreateView
 from django.urls import reverse_lazy
 
@@ -28,4 +29,6 @@ class UserRegisterView(CreateView):
             return redirect('core:index')
         return super().dispatch(request, *args, **kwargs)
 
-
+@login_required
+def myAccount(request):
+    return render(request, 'user/myaccount.html')

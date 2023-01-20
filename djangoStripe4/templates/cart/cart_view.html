@@ -47,7 +47,7 @@
               <h2 class="m-2">Summary</h2>
               <span class="m-2"><strong>Total: </strong></span>
               <span class="m-2">Rs. {{ cart.get_total_amount }}</span><br>
-              <button type="submit" class="btn btn-outline-warning checkout-btn">Checkout</button>
+              <a type="submit" class="btn btn-outline-warning checkout-btn" href="{% url 'core:checkout' %}" role="button">Checkout</a>
             </div>
           </div>
         </div>
