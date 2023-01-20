@@ -1,0 +1,57 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Cart{% endblock %}
+
+{% block body %}
+    <h1 class="text-center">Cart</h1>
+    
+    <div class="row">
+        <div class="col-md-8">
+          <div class="card card-style">
+            <div class="card-heading">
+              <h2 class="m-2">Products</h2>
+              <div class="card-body card-style">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>S.N.</th>
+                        <th></th>
+                        <th>Product</th>
+                        <th>Rate</th>
+                        <th>action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for item in cart %}
+                      <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td><img src="{{ item.product.thumbnail.url }}" alt="" width="100px" height="auto"></td>
+                        <td>{{ item.product.name }}</td>
+                        <td>{{ item.product.price }}</td>
+                        <td>
+                          <a href="{% url 'core:cart_update' pk=item.product.id action='decrement' %}" class="btn btn-outline-danger">-</a>
+                          &ensp;{{ item.quantity }}&ensp;
+                          <a href="{% url 'core:cart_update' pk=item.product.id action='increment' %}" class="btn btn-outline-danger">+</a>
+                        </td>
+                      </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card card-style">
+            <div class="card-heading">
+              <h2 class="m-2">Summary</h2>
+              <span class="m-2"><strong>Total: </strong></span>
+              <span class="m-2">Rs. 99</span><br>
+              <button type="submit" class="btn btn-outline-warning checkout-btn">Checkout</button>
+            </div>
+          </div>
+        </div>
+    </div>
+
+    
+{% endblock %}

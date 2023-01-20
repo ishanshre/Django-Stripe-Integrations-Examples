@@ -1,0 +1,55 @@
+.icon-button {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border: none;
+    outline: none;
+    border-radius: 50%;
+}
+
+.icon-button__badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    height: 20px;
+    width: 20px;
+    background-color: red;
+    display: flex;
+    color: white;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50px;
+}
+
+.icon-button:hover {
+    background: #0b56d7;
+    color: #fff;
+}
+
+.icon-button-after .icon-button__badge::after {
+    display: none;
+}
+
+.icon-button-after::after {
+    content: none;
+}
+
+.icon-button-after::after {
+    color: #fff;
+}
+
+.card-style {
+    border-radius: 25px;
+    margin: 5px;
+    padding: 2px;
+}
+
+.checkout-btn {
+    margin: 3px auto 3px auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
