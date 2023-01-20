@@ -44,6 +44,8 @@ class Cart(object):
         if product_id not in self.cart:
             """If items is not in the cart then add item to cart"""
             self.cart[product_id] = {'quantity':1, 'id':product_id}
+            self.save()
+            return
 
         if product_id in self.cart:
             """adding the quantity of items if alreadly exist"""
@@ -66,3 +68,10 @@ class Cart(object):
         if product_id in self.cart:
             del self.cart[product_id]
             self.save()
+    
+    def get_total_amount(self):
+        """Returns total amount of prices"""
+        for pk in self.cart.keys():
+            self.cart[str(pk)]['product'] = Product.objects.get(id=pk)
+        
+        return int(sum(item['product'].price * item['quantity'] for item in self.cart.values()))

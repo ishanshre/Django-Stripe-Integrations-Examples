@@ -27,7 +27,7 @@
                         <td>{{ forloop.counter }}</td>
                         <td><img src="{{ item.product.thumbnail.url }}" alt="" width="100px" height="auto"></td>
                         <td>{{ item.product.name }}</td>
-                        <td>{{ item.product.price }}</td>
+                        <td>Rs. {{ item.product.price }}</td>
                         <td>
                           <a href="{% url 'core:cart_update' pk=item.product.id action='decrement' %}" class="btn btn-outline-danger">-</a>
                           &ensp;{{ item.quantity }}&ensp;
@@ -46,7 +46,7 @@
             <div class="card-heading">
               <h2 class="m-2">Summary</h2>
               <span class="m-2"><strong>Total: </strong></span>
-              <span class="m-2">Rs. 99</span><br>
+              <span class="m-2">Rs. {{ cart.get_total_amount }}</span><br>
               <button type="submit" class="btn btn-outline-warning checkout-btn">Checkout</button>
             </div>
           </div>

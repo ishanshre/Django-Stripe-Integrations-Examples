@@ -130,3 +130,7 @@ PAYMENT_CANCEL_URL='http://127.0.0.1:8000/cancel/'
 
 SESSION_COOKIE_AGE = 86400 # How long the cookie stores our data
 CART_SESSION_ID = 'cart' # a seperate session id for our carts
+
+LOGIN_REDIRECT_URL = 'core:index'
+LOGOUT_REDIRECT_URL = 'core:login'
+LOGIN_URL = 'core:login'

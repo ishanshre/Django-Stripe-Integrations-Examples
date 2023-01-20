@@ -1,7 +1,11 @@
+
 from django.urls import path
+from django.contrib.auth.views import LogoutView
 
 from core import views
 from cart import views as cart_views
+from accounts import views as user_views
+
 
 
 app_name = "core"
@@ -16,4 +20,9 @@ urlpatterns = [
     path('cart/add_to_cart/<int:pk>/', cart_views.add_to_cart, name='add_to_cart'),
     path('cart/view/', cart_views.cart_view, name='cart_view'),
     path('cart/update/<int:pk>/<str:action>/', cart_views.cart_update, name='cart_update'),
+
+    # urls for accounts
+    path('login/', user_views.UserLoginView.as_view(), name='login'),
+    path('logout/', LogoutView.as_view(), name='logout'),
+    path('register/', user_views.UserRegisterView.as_view(), name='register'),
 ]

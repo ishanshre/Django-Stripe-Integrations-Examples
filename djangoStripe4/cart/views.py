@@ -20,3 +20,4 @@ def cart_update(request, pk, action):
     if action == 'increment':
         cart.update(product_id=pk, quantity=1, update_quantity=True)
     return redirect('core:cart_view')
+
