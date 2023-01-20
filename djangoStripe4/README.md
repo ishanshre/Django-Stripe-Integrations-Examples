@@ -1,0 +1,1 @@
+# A simple stripe integration for a simple online shop with cart functionality
