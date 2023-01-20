@@ -6,8 +6,6 @@
     <h1 class="text-center">CheckOut</h1>
     
     <div class="text-center w-50 form-control">
-        <form action="{% url 'core:start_order' %}" method="post">
-            {% csrf_token %}
             <table>
                 <tr>
                     <td><label for="first_name">First Name</label></td>
@@ -38,10 +36,51 @@
                     <td><input type="text" name="phone" id="id_phone"class="form-control"></td>
                 </tr>           
             </table>
-            <input type="submit" value="Confirm Checkout" class="btn btn-outline-warning">
-        </form>
-        
+            <button class="btn btn-outline-warning" id="checkoutBtn">Confim CheckOut</button>
         
     </div>
     
+{% endblock %}
+
+{% block js %}
+
+<script src="https://js.stripe.com/v3/"></script>
+
+<script type="text/javascript">
+   var checkoutBtn = document.getElementById("checkoutBtn");
+   checkoutBtn.addEventListener('click', (e)=>{
+    e.preventDefault()
+    let data = {
+            'first_name': document.querySelector('input[name=first_name]').value,
+            'last_name': document.querySelector('input[name=last_name]').value,
+            'email': document.querySelector('input[name=email]').value,
+            'phone': document.querySelector('input[name=phone]').value,
+            'address': document.querySelector('input[name=address]').value,
+            'zipcode': document.querySelector('input[name=zipcode]').value,
+            'place': document.querySelector('input[name=place]').value,
+        }
+    var stripe = Stripe("{{ stripe_pub_key }}")
+    fetch("/start_order/", {
+        method: 'POST',
+        headers: {
+            'Content_Type': "application/json",
+            "X-CSRFToken": "{{ csrf_token }}",
+        },
+        credentials: 'same-origin',
+        body: JSON.stringify(data)
+    }).then((response) => {
+        return response.json()
+    }).then((session)=>{
+        return stripe.redirectToCheckout({ sessionId: session.sessionId })
+    }).then((result)=>{
+        if (result.error){
+            alert(result.error.message)
+        }
+    }).catch((error)=>{
+        console.log("Error: ", error)
+    })
+    
+   });
+</script>
+
 {% endblock %}
