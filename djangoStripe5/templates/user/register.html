@@ -1,0 +1,16 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Register{% endblock %}
+
+{% block body %}
+    <h1 class="text-center">Register</h1>
+    
+    <div class="w-50" style="border-radius: 25px; margin: 10px auto 10px auto;">
+        <form method="post" class="form-control text-center" style="border-radius: 25px; margin: 10px auto 10px auto;">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="Register" class="btn btn-outline-primary">
+        </form>
+    </div>
+    
+{% endblock %}
