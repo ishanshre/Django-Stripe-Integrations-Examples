@@ -3,12 +3,23 @@
 {% block title %}{{request.user.username|title}}'s' Profile{% endblock %}
 
 {% block body %}
-    <div>
-        <h1 class="text-center">{{ request.user.first_name }} {{ request.user.last_name }}</h1>
-        <p><strong>Username: </strong>@{{ request.user.username }}</p>
-        <p><strong>Email: </strong>{{ request.user.email }}</p>
-        <p><strong>Last Login</strong>{{ request.user.last_login|timesince }} ago</p>
-        <p><strong>Joined: </strong>{{ request.user.date_joined|timesince }} ago</p>
+    <div class="row">
+        <div class="col-md-6">
+            <h1 class="text-center">{{ request.user.first_name }} {{ request.user.last_name }}</h1>
+            <p><strong>First Name: </strong>{{ request.user.first_name }}</p>
+            <p><strong>Last Name: </strong>{{ request.user.last_name }}</p>
+            <p><strong>Username: </strong>{{ request.user.username }}</p>
+            <p><strong>Email: </strong>{{ request.user.email }}</p>
+            <p><strong>Last Login</strong>{{ request.user.last_login|timesince }} ago</p>
+            <p><strong>Joined: </strong>{{ request.user.date_joined|timesince }} ago</p>
+        </div>
+        <div class="col-md-6">
+            <form method="post" class="form-control text-center" style="border-radius: 25px; margin: 10px auto 10px auto;">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input type="submit" value="Change" class="btn btn-outline-primary">
+            </form>
+        </div>
     </div>
     <div>
         <h1 class="text-center">Orders</h1>

@@ -1,6 +1,13 @@
 from django import forms
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
-from django.contrib.auth.models import User
+from django.contrib.auth.forms import (
+    AuthenticationForm,
+    UserCreationForm,
+    UserChangeForm,
+)
+from django.contrib.auth import get_user_model
+from phonenumber_field.formfields import PhoneNumberField
+
+User = get_user_model()
 
 
 class UserLoginForm(AuthenticationForm):
@@ -10,10 +17,29 @@ class UserLoginForm(AuthenticationForm):
 
     class Meta:
         models = User
-        fields = ['username','password','remember_me']
+        fields = ["username", "password", "remember_me"]
 
 
 class UserRegisterForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
         model = User
-        fields = ['first_name','last_name', 'username','email']
+        fields = ["first_name", "last_name", "username", "email"]
+
+
+class CustomUserChangeForm(forms.Form):
+    first_name = forms.CharField()
+    last_name = forms.CharField()
+    phone = PhoneNumberField(region="NP")
+    zipcode = forms.CharField()
+    shipping_address = forms.CharField()
+    place = forms.CharField()
+
+    class Meta:
+        fields = [
+            "first_name",
+            "last_name",
+            "phone",
+            "zipcode",
+            "shipping_address",
+            "place",
+        ]

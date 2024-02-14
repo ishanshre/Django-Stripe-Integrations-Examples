@@ -1,9 +1,14 @@
 from django.db import models
 from django.urls import reverse
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 
 from django.core.validators import MinValueValidator
+
 # Create your models here.
+
+User = get_user_model()
+
+
 class Product(models.Model):
     name = models.CharField(max_length=255)
     body = models.TextField()
@@ -15,21 +20,20 @@ class Product(models.Model):
 
     def __str__(self):
         return f"{self.name} --> {self.price}"
-    
+
     def get_absolute_url(self):
         return reverse("core:detail", args=[self.id])
 
 
 class Order(models.Model):
-    ORDERED = 'ordered'
-    SHIPPED = 'shipped'
+    ORDERED = "ordered"
+    SHIPPED = "shipped"
 
-    STATUS_CHOICES = (
-        (ORDERED, 'Ordered'),
-        (SHIPPED, 'Shipped')
+    STATUS_CHOICES = ((ORDERED, "Ordered"), (SHIPPED, "Shipped"))
+
+    user = models.ForeignKey(
+        User, related_name="orders", blank=True, null=True, on_delete=models.CASCADE
     )
-
-    user = models.ForeignKey(User, related_name='orders', blank=True, null=True, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
     email = models.CharField(max_length=255)
@@ -47,17 +51,18 @@ class Order(models.Model):
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default=ORDERED)
 
     class Meta:
-        ordering = ('-created_at',)
-    
+        ordering = ("-created_at",)
+
     def get_total_price(self):
         if self.paid_amount:
             return self.paid_amount / 100
-        
+
         return 0
 
+
 class OrderItem(models.Model):
-    order = models.ForeignKey(Order, related_name='items', on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, related_name='items', on_delete=models.CASCADE)
+    order = models.ForeignKey(Order, related_name="items", on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, related_name="items", on_delete=models.CASCADE)
     price = models.IntegerField()
     quantity = models.IntegerField(default=1)
 
