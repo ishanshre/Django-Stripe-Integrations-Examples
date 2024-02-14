@@ -14,16 +14,18 @@ import json
 import stripe
 # Create your views here.
 
-
+@login_required
 def add_to_cart(request, pk):
     cart = Cart(request)
     cart.add(product_id=pk)
     return redirect('core:index')
 
-
+@login_required
 def cart_view(request):
     return render(request, "cart/cart_view.html")
 
+
+@login_required
 def cart_update(request, pk, action):
     cart = Cart(request)
     if action == 'decrement':
@@ -42,11 +44,13 @@ class CheckOutView(LoginRequiredMixin, View):
 @login_required
 def start_order(request):
     cart = Cart(request)
+    print(cart)
     data = json.loads(request.body)
     total_price = 0
     items = []
     """Creating a list of product items for stripe checkout session"""
     for item in cart:
+        print("item", item)
         product = item['product']
         quantity = int(item['quantity'])
         total_price += product.price * quantity
@@ -55,6 +59,10 @@ def start_order(request):
                 "currency":"npr",
                 "product_data":{
                     "name": product.name,
+                    "description": product.body,
+                    "images": [
+                        request.build_absolute_uri(product.thumbnail.url),
+                    ],
                 },
                 "unit_amount": int(product.price) * 100
             },

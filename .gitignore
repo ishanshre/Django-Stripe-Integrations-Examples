@@ -21,3 +21,16 @@ media
 */*/media
 */*/*/media
 */*/*/*/media
+
+staticfiles/
+*/staticfiles/
+*/*/staticfiles/
+*/*/*/staticfiles/
+*/*/*/*/staticfiles/
+
+
+venv
+*/venv
+*/*/venv
+*/*/*/venv
+*/*/*/*/venv
