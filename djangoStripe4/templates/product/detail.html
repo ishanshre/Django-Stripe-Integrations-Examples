@@ -3,27 +3,23 @@
 {% block title %}{{ product.name }}{% endblock %}
 
 {% block body %}
-<div class="row">
+<div class="row container p-5">
     <div class="col-md-4">
         <img src="{{ product.thumbnail.url }}" class="card-img-top" alt="{{ product.name }}" height="auto" width="300px" style="border-radius: 25px;">
+        <p><strong>Price: </strong>{{ product.price }}</p>
+        <div class="form-group">
+          <label for="quantity">Quantity: </label>
+          <input type="text" name="quantity" id="quantity" class="form-control" placeholder="Quantity">
+        </div>
+        <button type="submit" class="btn btn-outline-danger mt-3 card" id="checkout-button">Checkout</button>
     </div>
     <div class="col-md-8">
         <div class="card" style="border-radius: 25px;">
             <h5 class="card-header">{{ product.name }}</h5>
             <div class="card-body">
               <p class="card-text">{{ product.body }}</p>
-              <p><strong>Price: </strong>{{ product.price }}</p>
               <p><strong>URL: </strong>{{ product.url }}</p>
               <p><strong>Book Uploaded: </strong>{{ product.created_at|timesince }} ago</p>
-              <div class="form-group">
-                <label for="quantity">Quantity: </label>
-                <input type="text" name="quantity" id="quantity" class="form-control" placeholder="Quantity">
-                <small>Please enter quantity</small>
-                <label for="email">Email: </label>
-                <input type="email" name="email" id="email" class="form-control" placeholder="Email">
-                <small>Please enter your email address</small>
-                </div>
-              <button type="submit" class="btn btn-outline-danger" id="checkout-button">Checkout</button>
             </div>
           </div>
     </div>
