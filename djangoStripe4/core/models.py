@@ -14,7 +14,7 @@ class Product(models.Model):
     body = models.TextField()
     thumbnail = models.ImageField(upload_to="product/image", blank=True)
     url = models.URLField()
-    price = models.DecimalField(decimal_places=2, max_digits=15)
+    price = models.PositiveBigIntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

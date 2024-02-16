@@ -2,6 +2,10 @@
 
 {% block title %}{{ product.name }}{% endblock %}
 
+{% block headjs %}
+<script src="https://js.stripe.com/v3/"></script>
+{% endblock %}
+
 {% block body %}
 <div class="row container p-5">
     <div class="col-md-4">
@@ -11,19 +15,55 @@
           <label for="quantity">Quantity: </label>
           <input type="text" name="quantity" id="quantity" class="form-control" placeholder="Quantity">
         </div>
-        <button type="submit" class="btn btn-outline-danger mt-3 card" id="checkout-button">Checkout</button>
+        <button type="submit" class="btn btn-outline-danger mt-3 card" id="checkout-button">Buy</button>
     </div>
     <div class="col-md-8">
         <div class="card" style="border-radius: 25px;">
             <h5 class="card-header">{{ product.name }}</h5>
+            <h5 class="card-header d-none">Buy {{ product.name }}</h5>
             <div class="card-body">
-              <p class="card-text">{{ product.body }}</p>
-              <p><strong>URL: </strong>{{ product.url }}</p>
-              <p><strong>Book Uploaded: </strong>{{ product.created_at|timesince }} ago</p>
+              <div id="description-body" data-product-price="{{ product.price }}">
+                <p class="card-text">{{ product.body }}</p>
+                <p><strong>URL: </strong>{{ product.url }}</p>
+                <p><strong>Book Uploaded: </strong>{{ product.created_at|timesince }} ago</p>
+              </div>
+              <div id="stripe-buy" data-stripe-key="{{ stripe }}">
+                <form id="payment-form">
+                  {% csrf_token %}
+                  <div id="payment-element">
+                    <!-- Elements will create form elements here -->
+                  </div>
+                  <button id="submit">Submit</button>
+                  <div id="error-message">
+                    <!-- Display error message to your customers here -->
+                  </div>
+                </form>
+              </div>
             </div>
           </div>
     </div>
 </div>
+
+<script>
+  const key = document.getElementById("stripe-buy").getAttribute("data-stripe-key");
+  const stripe = Stripe(key);
+
+  let price = document.getElementById("description-body").getAttribute("data-product-price")
+  const options = {
+  mode: 'payment',
+  amount: price,
+  currency: 'usd',
+  // Fully customizable with appearance API.
+  appearance: {/*...*/},
+  };
+
+  // Set up Stripe.js and Elements to use in checkout form
+  const elements = stripe.elements(options);
+
+  // Create and mount the Payment Element
+  const paymentElement = elements.create('payment');
+  paymentElement.mount('#payment-element');
+</script>
     
 {% endblock %}
 
