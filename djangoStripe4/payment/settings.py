@@ -143,3 +143,8 @@ LOGOUT_REDIRECT_URL = "core:login"
 LOGIN_URL = "core:login"
 
 CKEDITOR_UPLOAD_PATH = "uploads/"
+CSRF_TRUSTED_ORIGINS = ["https://*.ngrok-free.app", "http://*", "https://*"]
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ORIGIN_ALLOW_ALL = True
+# Cors error on credentials
+CORS_ALLOW_CREDENTIALS = True

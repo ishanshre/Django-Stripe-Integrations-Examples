@@ -21,7 +21,7 @@
             <div id="payment-element">
               <!-- Elements will create form elements here -->
             </div>
-            <button id="submit">Submit</button>
+            <button id="submit" class="btn btn-outline-danger">Submit</button>
             <div id="error-message">
               <!-- Display error message to your customers here -->
             </div>
@@ -78,11 +78,11 @@
     amount: price,
     currency: 'usd',
     // Fully customizable with appearance API.
-    appearance: {
-    type: 'accordion',
-    defaultCollapsed: false,
-    radios: true,
-    spacedAccordionItems: false
+    layout: {
+      type: 'accordion',
+      defaultCollapsed: false,
+      radios: true,
+      spacedAccordionItems: false
   }
   };
 
