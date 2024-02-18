@@ -7,15 +7,45 @@
 {% endblock %}
 
 {% block body %}
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">{{ product.name }} X <span id="quantity-modal"></span></h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div id="stripe-buy" data-stripe-key="{{ stripe }}">
+          <form id="payment-form">
+            {% csrf_token %}
+            <div id="payment-element">
+              <!-- Elements will create form elements here -->
+            </div>
+            <button id="submit">Submit</button>
+            <div id="error-message">
+              <!-- Display error message to your customers here -->
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="row container p-5">
     <div class="col-md-4">
         <img src="{{ product.thumbnail.url }}" class="card-img-top" alt="{{ product.name }}" height="auto" width="300px" style="border-radius: 25px;">
         <p><strong>Price: </strong>{{ product.price }}</p>
-        <div class="form-group">
+        <div class="form-group d-flex justify-content-center align-items-center">
           <label for="quantity">Quantity: </label>
-          <input type="text" name="quantity" id="quantity" class="form-control" placeholder="Quantity">
+          <input type="number" name="quantity" id="quantity" class="form-control ml-5" placeholder="Quantity" value="1" min="1" max="10">
         </div>
-        <button type="submit" class="btn btn-outline-danger mt-3 card" id="checkout-button">Buy</button>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+          Buy
+        </button>
     </div>
     <div class="col-md-8">
         <div class="card" style="border-radius: 25px;">
@@ -27,18 +57,7 @@
                 <p><strong>URL: </strong>{{ product.url }}</p>
                 <p><strong>Book Uploaded: </strong>{{ product.created_at|timesince }} ago</p>
               </div>
-              <div id="stripe-buy" data-stripe-key="{{ stripe }}">
-                <form id="payment-form">
-                  {% csrf_token %}
-                  <div id="payment-element">
-                    <!-- Elements will create form elements here -->
-                  </div>
-                  <button id="submit">Submit</button>
-                  <div id="error-message">
-                    <!-- Display error message to your customers here -->
-                  </div>
-                </form>
-              </div>
+              
             </div>
           </div>
     </div>
@@ -47,14 +66,24 @@
 <script>
   const key = document.getElementById("stripe-buy").getAttribute("data-stripe-key");
   const stripe = Stripe(key);
-
-  let price = document.getElementById("description-body").getAttribute("data-product-price")
+  let quantity = document.getElementById("quantity");
+  let quantity_modal = document.getElementById("quantity-modal");
+  quantity_modal.innerText = quantity.value;
+  quantity.addEventListener("change", ()=> {
+    quantity_modal.innerText = document.getElementById("quantity").value;
+  })
+  let price = parseInt(document.getElementById("description-body").getAttribute("data-product-price"));
   const options = {
-  mode: 'payment',
-  amount: price,
-  currency: 'usd',
-  // Fully customizable with appearance API.
-  appearance: {/*...*/},
+    mode: 'payment',
+    amount: price,
+    currency: 'usd',
+    // Fully customizable with appearance API.
+    appearance: {
+    type: 'accordion',
+    defaultCollapsed: false,
+    radios: true,
+    spacedAccordionItems: false
+  }
   };
 
   // Set up Stripe.js and Elements to use in checkout form

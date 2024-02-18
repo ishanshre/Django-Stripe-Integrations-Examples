@@ -15,7 +15,7 @@ SECRET_KEY = str(os.getenv("SECRET_KEY"))
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -28,6 +28,8 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "phonenumber_field",
+    "ckeditor",
+    "ckeditor_uploader",
     "accounts.apps.AccountsConfig",
     "core.apps.CoreConfig",
     "cart.apps.CartConfig",
@@ -139,3 +141,5 @@ CART_SESSION_ID = "cart"  # a seperate session id for our carts
 LOGIN_REDIRECT_URL = "core:index"
 LOGOUT_REDIRECT_URL = "core:login"
 LOGIN_URL = "core:login"
+
+CKEDITOR_UPLOAD_PATH = "uploads/"
