@@ -11,7 +11,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">{{ product.name }} X <span id="quantity-modal"></span></h1>
+        <h1 class="modal-title fs-5" id="exampleModalLabel">{{ product.name }} x <span id="quantity-modal"></span></h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
@@ -53,7 +53,7 @@
             <h5 class="card-header d-none">Buy {{ product.name }}</h5>
             <div class="card-body">
               <div id="description-body" data-product-price="{{ product.price }}">
-                <p class="card-text">{{ product.body }}</p>
+                <p class="card-text">{{ product.body|safe }}</p>
                 <p><strong>URL: </strong>{{ product.url }}</p>
                 <p><strong>Book Uploaded: </strong>{{ product.created_at|timesince }} ago</p>
               </div>
