@@ -23,7 +23,7 @@ class UserLoginView(LoginView):
 class UserRegisterView(CreateView):
     template_name = "user/register.html"
     form_class = UserRegisterForm
-    success_url = reverse_lazy("core:login")
+    success_url = reverse_lazy("accounts:login")
 
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated:
@@ -46,7 +46,7 @@ def myAccount(request):
             user.shipping_address = form.cleaned_data["shipping_address"]
             user.place = form.cleaned_data["place"]
             user.save()
-            return redirect("core:myaccount")
+            return redirect("accounts:myaccount")
     else:
         form = CustomUserChangeForm()
 

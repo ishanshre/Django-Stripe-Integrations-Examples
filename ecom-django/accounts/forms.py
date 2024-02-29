@@ -6,6 +6,7 @@ from django.contrib.auth.forms import (
 )
 from django.contrib.auth import get_user_model
 from phonenumber_field.formfields import PhoneNumberField
+from phonenumber_field.widgets import PhoneNumberPrefixWidget
 
 User = get_user_model()
 
@@ -21,9 +22,26 @@ class UserLoginForm(AuthenticationForm):
 
 
 class UserRegisterForm(UserCreationForm):
+    phone = PhoneNumberField(
+        region="CA",
+        widget=PhoneNumberPrefixWidget(
+            country_choices=[
+                ("NP", "Nepal"),
+            ],
+        ),
+    )
+
     class Meta(UserCreationForm.Meta):
         model = User
-        fields = ["first_name", "last_name", "username", "email"]
+        fields = [
+            "first_name",
+            "last_name",
+            "phone",
+            "shipping_address",
+            "place",
+            "username",
+            "email",
+        ]
 
 
 class CustomUserChangeForm(forms.Form):
