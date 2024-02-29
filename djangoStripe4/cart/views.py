@@ -103,8 +103,7 @@ def start_order(request):
         phone=phone,
         address=address,
         stripe_id=session.stripe_id,
-        paid=True,
-        paid_amount=total_price,
+        paid=False,
     )
     for item in cart:
         product = item["product"]
@@ -113,33 +112,30 @@ def start_order(request):
         item = OrderItem.objects.create(
             order=order, product=product, price=price, quantity=quantity
         )
-    cart.clear()
+    # cart.clear()
     return JsonResponse({"sessionId": session.id})
 
 
-def fulfill_order(line_items):
-    # TODO: fill me in
-    print("Fulfilling order")
+# def email_customer_about_failed_payment(session):
+#     # TODO: fill me in
+#     print("Emailing customer")
 
 
-def create_order(session):
-    # TODO: fill me in
-    print("Creating order")
-
-
-def email_customer_about_failed_payment(session):
-    # TODO: fill me in
-    print("Emailing customer")
+from pprint import pprint
 
 
 @csrf_exempt
 def stripe_webhook(request):
     payload = request.body
     sig_header = request.META["HTTP_STRIPE_SIGNATURE"]
+    pprint(sig_header)
+    pprint(settings.STRIPE_WEBHOOK_SECRET_KEY)
     event = None
 
     try:
-        event = stripe.Webhook.construct_event(payload, sig_header, endpoint_secret)
+        event = stripe.Webhook.construct_event(
+            payload, sig_header, settings.STRIPE_WEBHOOK_SECRET_KEY
+        )
     except ValueError as e:
         # Invalid payload
         print(str(e))
@@ -150,31 +146,34 @@ def stripe_webhook(request):
         return HttpResponse(status=400)
     # Handle the checkout.session.completed event
     if event["type"] == "checkout.session.completed":
+        pass
+        # session = event["data"]["object"]
+        # if session.payment_status == "paid":
+        #     pass
+        # Fulfill the purchase
+        # fulfill_order(session)
+        print(
+            "........................inside checkout succeded......................................."
+        )
         session = event["data"]["object"]
-
-        # Save an order in your database, marked as 'awaiting payment'
-        create_order(session)
-
-        # Check if the order is already paid (for example, from a card payment)
-        #
-        # A delayed notification payment will have an `unpaid` status, as
-        # you're still waiting for funds to be transferred from the customer's
-        # account.
+        print(session["id"])
+        order = Order.objects.get(stripe_id=session["id"])
         if session.payment_status == "paid":
-            # Fulfill the purchase
-            fulfill_order(session)
+            order.paid = True
+            order.paid_amount = session["amount_total"]
+        order.save()
 
     elif event["type"] == "checkout.session.async_payment_succeeded":
-        session = event["data"]["object"]
-
         # Fulfill the purchase
-        fulfill_order(session)
+        # fulfill_order(session)
+        pass
 
     elif event["type"] == "checkout.session.async_payment_failed":
-        session = event["data"]["object"]
+        pass
+        # session = event["data"]["object"]
 
-        # Send an email to the customer asking them to retry their order
-        email_customer_about_failed_payment(session)
+        # # Send an email to the customer asking them to retry their order
+        # email_customer_about_failed_payment(session)
     # Passed signature verification
 
     return HttpResponse(status=200)
