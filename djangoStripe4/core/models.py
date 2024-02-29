@@ -3,6 +3,7 @@ from django.urls import reverse
 from django.contrib.auth import get_user_model
 
 from django.core.validators import MinValueValidator
+from ckeditor.fields import RichTextField
 
 # Create your models here.
 
@@ -11,10 +12,10 @@ User = get_user_model()
 
 class Product(models.Model):
     name = models.CharField(max_length=255)
-    body = models.TextField()
+    body = RichTextField()
     thumbnail = models.ImageField(upload_to="product/image", blank=True)
     url = models.URLField()
-    price = models.DecimalField(decimal_places=2, max_digits=15)
+    price = models.PositiveBigIntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

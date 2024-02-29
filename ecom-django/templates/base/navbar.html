@@ -7,12 +7,12 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link" href="{% url 'core:cart_view' %}">
+            <a class="nav-link" href="#">
               <button type="button" class="icon-button">
                 <span class="material-symbols-outlined">
                   shopping_cart
                   </span>
-                <span class="icon-button__badge" id="notification-badge">{{ cart|length }}</span>
+                <span class="icon-button__badge" id="notification-badge">0</span>
               </button>
             </a>
           </li>
@@ -22,11 +22,11 @@
             </a>
             <ul class="dropdown-menu">
               {% if request.user.is_authenticated %}
-              <li><a class="dropdown-item" href="{% url 'core:logout' %}">Logout</a></li>
-              <li><a class="dropdown-item" href="{% url 'core:myaccount' %}">My Account</a></li>
+              <li><a class="dropdown-item" href="{% url 'accounts:logout' %}">Logout</a></li>
+              <li><a class="dropdown-item" href="{% url 'accounts:myaccount' %}">My Account</a></li>
               {% else %}
-              <li><a class="dropdown-item" href="{% url 'core:login' %}">Login</a></li>
-              <li><a class="dropdown-item" href="{% url 'core:register' %}">Register</a></li>
+              <li><a class="dropdown-item" href="{% url 'accounts:login' %}">Login</a></li>
+              <li><a class="dropdown-item" href="{% url 'accounts:register' %}">Register</a></li>
               {% endif %}
             </ul>
           </li>

@@ -1,4 +1,3 @@
-from typing import Any
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView, TemplateView
 from django.conf import settings
@@ -18,7 +17,7 @@ class ProductDetailView(DetailView):
     context_object_name = "product"
     template_name = "product/detail.html"
 
-    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+    def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["stripe"] = settings.STRIPE_PUBLIC_KEY
         return context
