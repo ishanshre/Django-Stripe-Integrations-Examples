@@ -5,6 +5,7 @@ from django.views.generic.edit import CreateView
 from django.urls import reverse_lazy, reverse
 
 from accounts.forms import UserLoginForm, UserRegisterForm, CustomUserChangeForm
+from shop.models import Order, OrderItem
 
 # Create your views here.
 
@@ -49,5 +50,13 @@ def myAccount(request):
             return redirect("accounts:myaccount")
     else:
         form = CustomUserChangeForm()
+    orders = Order.active.prefetch_related("order_items").filter(user=request.user)
 
-    return render(request, "user/myaccount.html", context={"form": form})
+    return render(
+        request,
+        "user/myaccount.html",
+        context={
+            "form": form,
+            "orders": orders,
+        },
+    )

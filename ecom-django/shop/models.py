@@ -24,6 +24,7 @@ class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
     is_deleted = models.BooleanField(default=False)
     active = ActiveManager()
+    objects = models.Manager()
 
     def __str__(self):
         return f"{self.user.first_name} {self.user.last_name} --> order status --> {self.payment_status}"
@@ -48,7 +49,7 @@ class OrderItem(models.Model):
     )
 
     def save(self):
-        self.unit_price = self.product.unit_price * self.quantity
+        self.unit_price = self.product.price * self.quantity
         return super().save()
 
 
@@ -73,6 +74,7 @@ class CartItem(models.Model):
 
     is_deleted = models.BooleanField(default=False)
     active = ActiveManager()
+    objects = models.Manager()
 
     class Meta:
         unique_together = [["cart", "product"]]

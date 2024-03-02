@@ -21,22 +21,22 @@
             </form>
         </div>
     </div>
-    <!-- <div>
-        <h1 class="text-center">Orders</h1>
+    <div>
+        <h1 class="text-center">Order Histroy</h1>
         <div>
             <ul>
-            {% for order in request.user.orders.all %}
+            {% for order in orders %}
                 <li>Order #{{ order.id }}</li>
                     <ol>
-                        {% for item in order.items.all %}
+                        {% for item in order.order_items.all %}
                             <li>
-                                {{ item.product.name }}, Price: {{ item.product.price }}, Quantity: {{item.quantity}}, Total Price: {{ item.price }}
+                                {{ item.product.name }}, Price: {{ item.product.price }}, Quantity: {{item.quantity}}, Total Price: {{ item.unit_price }}
                             </li>
                         {% endfor %}
                     </ol>
             {% endfor %}
             </ul>
         </div>
-    </div> -->
+    </div>
     
 {% endblock %}
