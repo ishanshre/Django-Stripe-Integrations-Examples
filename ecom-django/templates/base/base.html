@@ -15,6 +15,7 @@
     {% endblock %}
   </head>
   <body>
+    {% csrf_token %}
     <div class="container mt-3 p-2 w-75 border-1" style="background-color: rgb(204, 204, 204); border-radius: 25px;">
         {% include 'base/navbar.html' %}
         {% block body %}

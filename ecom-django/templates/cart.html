@@ -6,7 +6,10 @@
     <h1 class="text-center text-white mt-5">Cart</h1>
     
     <div class="row mt-5">
-        
+        {% for items in cart.cart_items.all %}
+            {{items.id}}
+            {{items.product.name}}
+        {% endfor %}
     </div>
     
 {% endblock %}

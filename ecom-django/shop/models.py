@@ -1,7 +1,8 @@
-from django.db import models
-from django.contrib.auth import get_user_model
-from django.core.validators import MinValueValidator, MaxValueValidator
 import uuid
+
+from django.contrib.auth import get_user_model
+from django.core.validators import MaxValueValidator, MinValueValidator
+from django.db import models
 
 from core.models import Product
 from shop.manager import ActiveManager
@@ -58,7 +59,6 @@ class Cart(models.Model):
         primary_key=True, default=uuid.uuid4, editable=False, max_length=36
     )
     user = models.OneToOneField(User, on_delete=models.PROTECT, related_name="cart")
-    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self) -> str:
         return self.user.username
@@ -70,9 +70,12 @@ class CartItem(models.Model):
     product = models.ForeignKey(
         Product, on_delete=models.CASCADE, related_name="cartitems_product"
     )
-    quantity = models.PositiveIntegerField(validators=[MinValueValidator(1)])
+    quantity = models.PositiveIntegerField(
+        validators=[MinValueValidator(1)], blank=True, null=True
+    )
 
     is_deleted = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
     active = ActiveManager()
     objects = models.Manager()
 
