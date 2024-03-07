@@ -21,7 +21,7 @@ class CartDetailView(LoginRequiredMixin, DetailView):
     context_object_name = "cart"
 
     def get_object(self, queryset: QuerySet[Any] | None = ...) -> Model:
-        return Cart.objects.prefetch_related("cart_items").get_or_create(
+        return Cart.objects.prefetch_related("cart_items__product").get_or_create(
             user=self.request.user
         )[0]
 
